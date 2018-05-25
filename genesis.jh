@@ -1,0 +1,186 @@
+// an ignored comment
+/** not an ignored comment */
+
+/**
+ * The Person entity.
+ */
+entity PersonBio{
+	/**
+	* The firstname attribute.
+	*/
+	firstName String,
+	lastName String,
+    preferedAddress ContactType,
+    preferedEmail ContactType,
+    preferedPhone ContactType,
+}
+
+entity Location {
+	streetAddress1 String,
+	postalCode String,
+	city String,
+	stateProvince String
+}
+
+entity WebAccount {
+	identifier String
+}
+
+entity Job {
+	employerName String,
+    salaryInDollars Integer,
+    hireDate Instant,
+	salary Long,
+}
+
+entity Phone {
+	number String,
+    type ContactType,
+}
+
+entity EMail{
+	address String,
+    type ContactType,
+   
+}
+
+entity Certification{
+	credentialName String
+}
+
+entity Scorable {
+	puid String,
+	effectiveDate Date,
+    expirationDate Date,
+    latest Boolean,
+}
+
+entity CriminalHistory {
+	
+}
+
+entity CriminalEvent {
+
+}
+
+entity FinancialHistory {
+	
+}
+
+entity FinancialEvent {
+
+}
+
+entity WatchList {
+
+}
+
+entity WatchListEvent {
+
+}
+
+
+entity Credit{
+	score String
+}
+
+entity School{
+	name String
+}
+
+entity Degree{
+	name String
+}
+
+entity Contentable{
+
+}
+
+entity Consent{
+
+}
+
+entity DriversLicense {
+	number String
+}
+
+entity Validated{
+	validated Boolean,
+    validated Date
+}
+
+enum ContactType {
+	PERSONAL, BUSINESS, ALTERNATE, HOME, WORK, PRIVATE
+}
+
+
+relationship OneToOne {
+	PersonBio{home} to Location,
+    PersonBio{work} to Location,
+    PersonBio{primary} to EMail,
+    PersonBio{primary} to Phone,
+    PersonBio{credit} to Credit,
+    PersonBio{school} to School,
+    PersonBio{degree} to Degree,
+    Location{scorable} to Scorable,
+    Credit{scorable} to Scorable,
+    School{schoolLocation} to Location,
+    Degree{school} to School,
+    Degree {scorable} to Scorable,
+    Certification{scorable} to Scorable,
+    Job{jobLocation} to Location,
+    Phone{phoneLocation} to Location, 
+    WebAccount{scorable} to Scorable,
+    EMail{scorable} to Scorable,
+    Job{scorable} to Scorable,
+    Scorable{validated} to Validated,
+    PersonBio{driversLicense} to DriversLicense,
+    DriversLicense{location} to Location,
+    DriversLicense{dd} to Scorable,
+    PersonBio{crimnalHistory} to CriminalHistory,
+    CriminalHistory{scorable} to Scorable,
+    CriminalEvent{scorable} to Scorable,
+    CriminalEvent{location} to Location,
+    PersonBio{financialHistory} to FinancialHistory
+    FinancialHistory{financialEvent} to FinancialEvent
+    FinancialEvent{scoreable} to Scorable
+    PersonBio{watchList} to WatchList
+    WatchList{scorable} to Scorable
+    WatchListEvent{scorable} to Scorable
+    Scorable{consentable} to Contentable
+	Contentable{c} to Consent
+    Consent {employment} to EmploymentConsent
+    Consent {reference} to ReferenceConsent
+    Consent {purchase} to PurchaseConsent
+    ScoreCard{employment} to Consent
+
+}
+
+relationship OneToMany {
+	PersonBio{job} to Job
+    PersonBio{web} to WebAccount
+    PersonBio{certifaction} to Certification
+    CriminalHistory to CriminalEvent
+    WatchList to WatchListEvent
+    PersonBio to Consent
+    PredictiveAttribute to Scorable
+	ScoreCard to PredictiveAttribute
+}
+
+entity EmploymentConsent{
+
+}
+entity ReferenceConsent{
+
+}
+entity PurchaseConsent{
+
+}
+
+entity PredictiveAttribute {
+
+}
+
+entity ScoreCard{
+
+}
